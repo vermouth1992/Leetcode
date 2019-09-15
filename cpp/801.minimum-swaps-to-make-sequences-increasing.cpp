@@ -45,22 +45,54 @@
  */
 
 #include<vector>
+#include<iostream>
+#include<climits>
 
 using namespace std;
 
 class Solution {
+
 public:
     int minSwap(vector<int>& A, vector<int>& B) {
         if (A.size() <= 1) return 0;
-        // initialize table
-        vector<int> optimal(A.size());
-        optimal[0] = 0;
-        for (int i = 1; i < A.size(); i++) {
-            if (A[i] > A[i - 1] && B[i] > B[i - 1]) {
-                optimal[i] = optimal[i - 1];
+
+        int minSwapCurrentIndexDoNotSwap = 0;
+        int minSwapCurrentIndexSwap = 1;   // assume index at 0 already swaped
+
+        for (int i = 1; i < A.size(); ++i) {
+            // must be swaped
+            int swapSwap = INT_MAX;
+            int swapNotSwap = INT_MAX;
+            int notSwapSwap = INT_MAX;
+            int notSwapNotSwap = INT_MAX;
+
+            // must swap
+            if (A[i] <= A[i - 1] || B[i] <= B[i - 1]) {
+                swapNotSwap = minSwapCurrentIndexSwap;
+                notSwapSwap = minSwapCurrentIndexDoNotSwap + 1;
             } else {
-                
+                // can't swap
+                if (A[i] <= B[i - 1] || B[i] <= A[i - 1]) {
+                    swapSwap = minSwapCurrentIndexSwap + 1;
+                    notSwapNotSwap = minSwapCurrentIndexDoNotSwap;
+                } else {
+                    // can swap
+                    swapSwap = minSwapCurrentIndexSwap + 1;
+                    swapNotSwap = minSwapCurrentIndexSwap;
+                    notSwapNotSwap = minSwapCurrentIndexDoNotSwap;
+                    notSwapSwap = minSwapCurrentIndexDoNotSwap + 1;
+                }
             }
+            minSwapCurrentIndexDoNotSwap = std::min(swapNotSwap, notSwapNotSwap);
+            minSwapCurrentIndexSwap = std::min(swapSwap, notSwapSwap);
         }
+        return std::min(minSwapCurrentIndexDoNotSwap, minSwapCurrentIndexSwap);
     }
 };
+
+
+int main() {
+    std::vector<int> a = {1, 3, 5, 4};
+    std::vector<int> b = {1, 2, 3, 7};
+    std::cout << Solution().minSwap(a, b) << std::endl;
+}
