@@ -49,24 +49,46 @@
 from typing import List
 
 class Solution:
-    def findLUSlengthHelper(self, a: str, b: str) -> int:
-        if len(a) != len(b):
-            return max(len(a), len(b))
-        else:
-            for i in range(len(a)):
-                if a[i] != b[i]:
-                    return len(a)
-            return -1
-    
-    def findLUSlength(self, strs: List[str]) -> int:
-        results = [[0 for _ in range(len(strs))] for _ in range(len(str))]
-        for i in range(len(strs)):
-            for j in range(i + 1, len(strs)):
-                out = self.findLUSlengthHelper(strs[i], strs[j])
-                results[i][j] = out
-                results[j][i] = out
+    def isSubSequence(self, a: str, b: str):
+        """ Return True if a is a subsequence of b
+        """
+        if len(b) < len(a):
+            return False
+        index_a = 0
+        for i in range(len(b)):
+            if b[i] == a[index_a]:
+                index_a += 1
+            if index_a == len(a):
+                return True
         
-        curr_max_length = -1
+        return False
+
+
+    def findLUSlength(self, strs: List[str]) -> int:
+        # sort the strings according to its length O(nlogn)
+        strs = sorted(strs, reverse=True, key=len)
+        flags = [False for _ in range(len(strs))]
         for i in range(len(strs)):
-            for j in range(len(strs)):
-                pass
+            success = True
+            if not flags[i]:
+                for j in range(len(strs)):
+                    if i != j:
+                        if self.isSubSequence(strs[i], strs[j]):
+                            # find a string with the same length
+                            if len(strs[i]) == len(strs[j]):
+                                flags[j] = True
+                            success = False
+                            break
+            else:
+                success = False
+
+            if success:
+                return len(strs[i])
+         
+        return -1
+            
+
+if __name__ == '__main__':
+    print(Solution().findLUSlength(["aba","cdc","eae"]))
+    print(Solution().findLUSlength(["aaa","aaa","aa"]))
+    print(Solution().findLUSlength(["aabbcc", "aabbcc","cb","abc"]))
