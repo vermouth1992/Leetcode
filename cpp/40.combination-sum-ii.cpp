@@ -77,7 +77,7 @@ private:
         for (int i = startIndex; i < candidates.size(); i++) {
             if (candidates[i] > target) break;
             // remove duplicate by not including different variants of the same number once the number is in the curr.
-            if (i > startIndex && candidates[i] == candidates[startIndex]) continue;
+            if (i > startIndex && candidates[i] == candidates[i - 1]) continue;
             curr.push_back(candidates[i]);
             this->helper(result, curr, candidates, target - candidates[i], i + 1);
             curr.pop_back();
