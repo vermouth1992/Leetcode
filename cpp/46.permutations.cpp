@@ -43,13 +43,13 @@ public:
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>> result;
         vector<int> curr;
-        vector<int> visited(nums.size(), false);
+        vector<bool> visited(nums.size(), false);
         this->helper(result, curr, nums, visited);
         return result;
     }
 
 private:
-    void helper(vector<vector<int>> &result, vector<int> &curr, vector<int>& nums, vector<int>& visited) {
+    void helper(vector<vector<int>> &result, vector<int> &curr, vector<int>& nums, vector<bool>& visited) {
         if (curr.size() == nums.size()) {
             result.push_back(vector(curr));
             return;
