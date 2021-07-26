@@ -41,14 +41,30 @@
 using namespace std;
 
 class Solution {
-
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        std::sort(nums.begin(), nums.end());
-        // pointers from left to right
-        size_t leftPointer = 0;
-        size_t rightPointer = nums.size() - 1;
         vector<vector<int>> result;
-        
+        if (nums.size() < 3) return result;
+        std::sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) continue;
+            std::map<int, int> left;
+            std::vector<bool> used(nums.size(), false);
+            int sum = -nums[i];
+            for (int j = i + 1; j < nums.size(); j++) {
+                if (left.find(nums[j]) != left.end()) {
+                    // find the left over
+                    int index = left[nums[j]];
+                    if (!used.at(index)) {
+                        vector<int> temp {nums[i], nums[index], nums[j]};
+                        result.push_back(temp);
+                        used.at(index) = true;
+                    }
+                } else {
+                    left[sum - nums[j]] = j;
+                }
+            }
+        }
+        return result;
     }
 };
