@@ -121,6 +121,5 @@ public:
 
 int main() {
     vector<vector<int>> a {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
-    Solution().updateMatrix(vector());
     return 0;
 }
