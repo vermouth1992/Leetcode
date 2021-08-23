@@ -33,12 +33,7 @@
  * 
  */
 
-#include<vector>
-#include<map>
-#include<set>
-#include<algorithm>
-
-using namespace std;
+#include "common.hpp"
 
 class Solution {
 public:
@@ -48,20 +43,25 @@ public:
         std::sort(nums.begin(), nums.end());
         for (int i = 0; i < nums.size(); i++) {
             if (i != 0 && nums[i] == nums[i - 1]) continue;
-            std::map<int, int> left;
-            std::vector<bool> used(nums.size(), false);
-            int sum = -nums[i];
-            for (int j = i + 1; j < nums.size(); j++) {
-                if (left.find(nums[j]) != left.end()) {
-                    // find the left over
-                    int index = left[nums[j]];
-                    if (!used.at(index)) {
-                        vector<int> temp {nums[i], nums[index], nums[j]};
-                        result.push_back(temp);
-                        used.at(index) = true;
-                    }
+            int start = i + 1;
+            int end = nums.size() - 1;
+            int current_sum = -nums[i];
+            while (start < end) {
+                if (nums[start] + nums[end] < current_sum) {
+                    start += 1;
+                } else if (nums[start] + nums[end] > current_sum) {
+                    end -= 1;
                 } else {
-                    left[sum - nums[j]] = j;
+                    result.push_back(std::vector<int> {nums[i], nums[start], nums[end]});
+                    // find the next start and end not equal to the current one
+                    start += 1;
+                    end -= 1;
+                    while (start < end && nums[start] == nums[start - 1]) {
+                        start += 1;
+                    }
+                    while (start < end && nums[end] == nums[end + 1]) {
+                        end -= 1;
+                    }
                 }
             }
         }
