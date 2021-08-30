@@ -16,8 +16,8 @@ public:
 
 class LRUCache {
 private:
-    Node *sentinal_front;  // most recently used node
-    Node *sentinal_back;   // least recently used node
+    Node *sentinel_front;  // most recently used node
+    Node *sentinel_back;   // least recently used node
     std::unordered_map<int, Node*> keyValue;
     int capacity;
 
@@ -27,9 +27,9 @@ private:
     }
 
     void addToFront(Node *node) {
-        node->prev = sentinal_front;
-        node->next = sentinal_front->next;
-        sentinal_front->next = node;
+        node->prev = sentinel_front;
+        node->next = sentinel_front->next;
+        sentinel_front->next = node;
         node->next->prev = node;
     }
 
@@ -40,15 +40,15 @@ private:
 
 public:
     LRUCache(int capacity) {
-        this->sentinal_front = new Node();
-        this->sentinal_back = new Node();
-        this->sentinal_front->next = this->sentinal_back;
-        this->sentinal_back->prev = this->sentinal_front;
+        this->sentinel_front = new Node();
+        this->sentinel_back = new Node();
+        this->sentinel_front->next = this->sentinel_back;
+        this->sentinel_back->prev = this->sentinel_front;
         this->capacity = capacity;
     }
 
     ~LRUCache() {
-        Node *node = this->sentinal_front;
+        Node *node = this->sentinel_front;
         while (node != nullptr)
         {
             Node *nextNode = node->next;
@@ -69,8 +69,8 @@ public:
     }
 
     void printList() {
-        Node *node = this->sentinal_front->next;
-        while (node != this->sentinal_back)
+        Node *node = this->sentinel_front->next;
+        while (node != this->sentinel_back)
         {
             std::cout << node->value << " ";
             node = node->next;
@@ -83,7 +83,7 @@ public:
         if (it == keyValue.end()) {
             // if reaches capacity, remove the LRU node
             if (keyValue.size() == this->capacity) {
-                Node *node = sentinal_back->prev;
+                Node *node = sentinel_back->prev;
                 removeNode(node);
                 keyValue.erase(node->key);
                 delete node;
