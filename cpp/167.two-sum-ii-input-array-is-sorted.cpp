@@ -33,15 +33,18 @@
  * Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
  * 
  */
+
+#include "common.hpp"
+
 class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
-        size_t leftPointer = 0;
-        size_t rightPointer = numbers.size() - 1;
+        int leftPointer = 0;
+        int rightPointer = numbers.size() - 1;
         while (leftPointer < rightPointer) {
             int sum = numbers[leftPointer] + numbers[rightPointer];
             if (sum == target) {
-                return std::vector({leftPointer + 1, rightPointer + 1});
+                return std::vector<int>({leftPointer + 1, rightPointer + 1});
             } else if (sum < target) {
                 leftPointer += 1;
             } else {
