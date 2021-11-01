@@ -12,6 +12,7 @@
 #include <cmath>
 #include <optional>
 #include <limits>
+#include <memory>
 
 using namespace std;
 
