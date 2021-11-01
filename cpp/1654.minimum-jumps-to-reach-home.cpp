@@ -113,19 +113,16 @@ public:
                 // otherwise push the next possible positions
                 // move forward
                 auto forward_state = std::make_pair(pos + a, false);
-                if (explored.find(forward_state) == explored.end()) {
-                    // we can't always move forward. It must be smaller than max(forbidden) + b
-                    if (pos + a <= max_forbidden + b + a) {
-                        next_frontier->push(forward_state);
-                    }
+                // we can't always move forward. It must be smaller than max(forbidden) + b
+                if (pos + a <= max_forbidden + b + a) {
+                    next_frontier->push(forward_state);
                 }
+                
                 
                 // move backward
                 if (backward_available(top) && pos - b >= 0) {
                     auto backward_state = std::make_pair(pos - b, true);
-                    if (explored.find(backward_state) == explored.end()) {
-                        next_frontier->push(backward_state);
-                    }   
+                    next_frontier->push(backward_state);
                 }
             }
             steps += 1;
