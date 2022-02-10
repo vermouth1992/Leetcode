@@ -79,6 +79,6 @@ public:
 
 int main() {
     std::vector<int> a {2, 3, 1, 1, 4};
-    std::cout << Solution().jump(a);
+    std::cout << Solution().jump(a) << std::endl;
     return 0;
 }
